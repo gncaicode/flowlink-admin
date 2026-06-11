@@ -11,7 +11,6 @@ import {
 } from "@tabler/icons-react";
 import { Card } from "@/components/ui/Card";
 import { Caption } from "@/components/ui/Caption";
-import { MaturityRing } from "@/components/charts/MaturityRing";
 import { EcgLineChart } from "@/components/charts/EcgLineChart";
 import { usePatientsStore } from "@/lib/store/patients";
 import { sessionsForPatient } from "@/lib/mock/sessions";
@@ -51,44 +50,6 @@ export default function PatientOverviewPage({
   return (
     <div className="grid lg:grid-cols-[1fr,360px] gap-6">
       <div className="flex flex-col gap-6 min-w-0">
-        {/* Maturity + KPIs */}
-        <Card className="!p-6">
-          <div className="flex gap-8 items-center flex-wrap">
-            <MaturityRing value={patient.maturity} />
-            <div className="flex-1 min-w-[260px]">
-              <Caption>VASCULAR MATURATION</Caption>
-              <div className="mt-1 text-[20px] font-bold text-navy">
-                혈관 성숙 진행률
-              </div>
-              <p className="mt-2 text-[12px] text-ink-500 leading-relaxed">
-                기저 혈관 직경{" "}
-                <b className="text-navy fl-num">
-                  {patient.baselineDiameterMm}mm
-                </b>{" "}
-                / 기저 혈류량{" "}
-                <b className="text-navy fl-num">
-                  {patient.baselineFlowMlMin} mL/min
-                </b>{" "}
-                기준 AI 추정치입니다.
-                <br />
-                목표 직경 도달까지 약{" "}
-                <b className="text-navy">
-                  {Math.max(0, Math.round((100 - patient.maturity) / 6))}주
-                </b>{" "}
-                예상.
-              </p>
-              <div className="mt-4 flex gap-2">
-                <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-1 rounded bg-navy-faint text-navy">
-                  AVF · {patient.anastomosis}
-                </span>
-                <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-1 rounded bg-snow border border-ink-200 text-ink-700">
-                  이전 이력 {patient.previousAvfHistory}
-                </span>
-              </div>
-            </div>
-          </div>
-        </Card>
-
         {/* Stats grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard

@@ -83,7 +83,6 @@ export default function NewPatientPage() {
         baselineDiameterMm: Number(draft.baselineDiameterMm) || 0,
         baselineFlowMlMin: Number(draft.baselineFlowMlMin) || 0,
         previousAvfHistory: draft.previousAvfHistory,
-        maturity: 5,
         adherence: 0,
         status: "inactive" as const,
         createdAt: new Date().toISOString().slice(0, 10),

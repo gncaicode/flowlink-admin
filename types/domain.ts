@@ -23,7 +23,6 @@ export type Patient = {
   baselineDiameterMm: number;
   baselineFlowMlMin: number;
   previousAvfHistory: "없음" | "1회" | "2회 이상";
-  maturity: number;
   program?: string;
   adherence: number;
   status: PatientStatus;

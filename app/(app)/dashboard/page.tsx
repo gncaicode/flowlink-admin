@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   IconUsers,
-  IconActivityHeartbeat,
   IconChartBar,
   IconAlertTriangle,
   IconArrowRight,
@@ -14,12 +13,10 @@ import { Card } from "@/components/ui/Card";
 import { Caption } from "@/components/ui/Caption";
 import { LinkButton } from "@/components/ui/Button";
 import { EcgLineChart } from "@/components/charts/EcgLineChart";
-import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
-import { MaturityBar } from "@/components/ui/MaturityBar";
 import { usePatientsStore } from "@/lib/store/patients";
 import { useSessionStore } from "@/lib/store/session";
-import { cn, formatDate } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 type DashboardData = {
   patients: {
@@ -28,7 +25,6 @@ type DashboardData = {
     watch: number;
     ready: number;
     inactive: number;
-    avgMaturity: number;
     avgAdherence: number;
   };
   sessions: {
@@ -58,7 +54,6 @@ export default function DashboardPage() {
   const trend = data?.trend ?? [];
 
   const recentAlerts = patients.filter((p) => p.alert).slice(0, 5);
-  const topRoster = [...patients].sort((a, b) => b.maturity - a.maturity).slice(0, 6);
 
   return (
     <div>
@@ -84,13 +79,6 @@ export default function DashboardPage() {
           caption="등록 대상자"
           value={stats ? String(stats.total) : "-"}
           sub={stats ? `운동 중 ${stats.active}명` : ""}
-        />
-        <Kpi
-          icon={<IconActivityHeartbeat size={16} />}
-          caption="평균 혈관 성숙도"
-          value={stats ? `${stats.avgMaturity}%` : "-"}
-          sub="전체 평균"
-          tone="teal"
         />
         <Kpi
           icon={<IconChartBar size={16} />}
@@ -166,51 +154,6 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* Top roster */}
-      <div className="mt-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <Caption>TOP MATURITY</Caption>
-            <div className="mt-1 text-[18px] font-bold text-navy">혈관 성숙도 상위 대상자</div>
-          </div>
-          <Link href="/patients" className="text-[12px] font-semibold text-navy hover:text-teal flex items-center gap-1">
-            전체 보기 <IconArrowRight size={14} />
-          </Link>
-        </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {topRoster.map((p) => (
-            <Link
-              key={p.id}
-              href={`/patients/${p.pid}`}
-              className="bg-white border-[0.5px] border-ink-200 rounded-card p-4 hover:border-navy/40 hover:shadow-card-hover transition-all"
-            >
-              <div className="flex items-center gap-3">
-                <Avatar name={p.name} tone={p.status === "watch" ? "red" : "navy"} size={40} />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <div className="text-[14px] font-bold text-navy">{p.name}</div>
-                    <div className="text-[11px] text-ink-500">{p.age}세 · {p.gender}</div>
-                  </div>
-                  <div className="text-[11px] text-ink-500 fl-num">{p.pid}</div>
-                </div>
-                <Badge tone={p.status} showDot={false} />
-              </div>
-              <div className="mt-3">
-                <MaturityBar value={p.maturity} size="sm" />
-              </div>
-              <div className="mt-2 flex items-center justify-between text-[11px] text-ink-500">
-                <span>수술 {formatDate(p.surgeryDate)}</span>
-                <span className={cn(
-                  "font-bold fl-num",
-                  p.adherence >= 80 ? "text-teal" : p.adherence < 60 ? "text-red" : "text-ink-700",
-                )}>
-                  순응도 {p.adherence}%
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }

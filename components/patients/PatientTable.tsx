@@ -12,7 +12,6 @@ import {
 } from "@tabler/icons-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
-import { MaturityBar } from "@/components/ui/MaturityBar";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { cn, formatDate } from "@/lib/utils";
@@ -20,7 +19,7 @@ import type { Patient } from "@/types/domain";
 import { useRouter } from "next/navigation";
 import { usePatientsStore } from "@/lib/store/patients";
 
-type SortKey = "name" | "surgeryDate" | "maturity" | "adherence";
+type SortKey = "name" | "surgeryDate" | "adherence";
 
 type Props = {
   data: Patient[];
@@ -45,9 +44,6 @@ export function PatientTable({ data }: Props) {
       } else if (sortKey === "surgeryDate") {
         av = a.surgeryDate;
         bv = b.surgeryDate;
-      } else if (sortKey === "maturity") {
-        av = a.maturity;
-        bv = b.maturity;
       } else {
         av = a.adherence;
         bv = b.adherence;
@@ -95,12 +91,6 @@ export function PatientTable({ data }: Props) {
                 className="w-[20%]"
               >
                 수술 정보 <SortArrow k="surgeryDate" />
-              </SortableTh>
-              <SortableTh
-                onClick={() => toggleSort("maturity")}
-                className="w-[20%]"
-              >
-                혈관 성숙도 <SortArrow k="maturity" />
               </SortableTh>
               <SortableTh
                 onClick={() => toggleSort("adherence")}
@@ -155,9 +145,6 @@ export function PatientTable({ data }: Props) {
                     />
                     {p.surgeryLocation}
                   </div>
-                </td>
-                <td className="py-4 px-3 pr-5">
-                  <MaturityBar value={p.maturity} size="sm" />
                 </td>
                 <td className="py-4 px-3">
                   <span

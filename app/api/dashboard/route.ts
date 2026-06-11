@@ -14,7 +14,6 @@ export async function GET(req: Request) {
     pool.query(`
       SELECT
         COUNT(*)                          AS total,
-        COALESCE(AVG(maturity), 0)        AS avgMaturity,
         COALESCE(AVG(adherence), 0)       AS avgAdherence,
         SUM(status = 'active')            AS active,
         SUM(status = 'watch')             AS watch,
@@ -59,7 +58,6 @@ export async function GET(req: Request) {
       watch: Number(p.watch),
       ready: Number(p.ready),
       inactive: Number(p.inactive),
-      avgMaturity: Math.round(Number(p.avgMaturity)),
       avgAdherence: Math.round(Number(p.avgAdherence)),
     },
     sessions: {
