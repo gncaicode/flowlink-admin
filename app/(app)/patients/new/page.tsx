@@ -84,7 +84,6 @@ export default function NewPatientPage() {
         baselineFlowMlMin: Number(draft.baselineFlowMlMin) || 0,
         previousAvfHistory: draft.previousAvfHistory,
         adherence: 0,
-        status: "inactive" as const,
         createdAt: new Date().toISOString().slice(0, 10),
       };
       await addPatient(patient);

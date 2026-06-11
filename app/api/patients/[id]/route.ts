@@ -26,7 +26,6 @@ export async function GET(
     previousAvfHistory: row.previous_avf_history as Patient["previousAvfHistory"],
     program: (row.program as string | null) ?? undefined,
     adherence: row.adherence as number,
-    status: row.status as Patient["status"],
     scheduled: row.scheduled
       ? (row.scheduled as Date).toISOString().slice(0, 10)
       : undefined,
@@ -50,7 +49,7 @@ export async function PATCH(
     anastomosis: "anastomosis", surgeonName: "surgeon_name",
     baselineDiameterMm: "baseline_diameter_mm", baselineFlowMlMin: "baseline_flow_ml_min",
     previousAvfHistory: "previous_avf_history",
-    adherence: "adherence", status: "status",
+    adherence: "adherence",
     scheduled: "scheduled",
     alert: "alert", groupId: "group_id",
   };

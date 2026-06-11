@@ -1,5 +1,3 @@
-export type PatientStatus = "active" | "watch" | "ready" | "inactive";
-
 export type SurgeryLocation =
   | "좌측 요골동맥"
   | "우측 요골동맥"
@@ -25,7 +23,6 @@ export type Patient = {
   previousAvfHistory: "없음" | "1회" | "2회 이상";
   program?: string;
   adherence: number;
-  status: PatientStatus;
   scheduled?: string;
   alert?: string;
   groupId?: string;

@@ -8,7 +8,6 @@ import {
   IconBellRinging,
 } from "@tabler/icons-react";
 import { Avatar } from "@/components/ui/Avatar";
-import { Badge } from "@/components/ui/Badge";
 import { TabNav } from "@/components/ui/Tabs";
 import { Caption } from "@/components/ui/Caption";
 import { formatDate } from "@/lib/utils";
@@ -32,7 +31,7 @@ export function PatientHeader({ patient }: Props) {
       <div className="mt-4 bg-white border-[0.5px] border-ink-200 rounded-card p-6 flex flex-wrap items-start gap-6">
         <Avatar
           name={p.name}
-          tone={p.status === "watch" ? "red" : "navy"}
+          tone="navy"
           size={64}
         />
         <div className="flex-1 min-w-[260px]">
@@ -44,7 +43,6 @@ export function PatientHeader({ patient }: Props) {
             <div className="text-[13px] text-ink-500">
               {p.age}세 · {p.gender === "M" ? "남성" : "여성"}
             </div>
-            <Badge tone={p.status} />
           </div>
           <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1.5 text-[12px] text-ink-700">
             <span className="flex items-center gap-1.5">

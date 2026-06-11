@@ -15,7 +15,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 412,
     previousAvfHistory: "없음",
     adherence: 86,
-    status: "active",
     createdAt: "2026-04-26",
   },
   {
@@ -32,7 +31,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 378,
     previousAvfHistory: "1회",
     adherence: 42,
-    status: "watch",
     alert: "3일 연속 미수행 · 자세 정확도 저하",
     createdAt: "2026-04-18",
   },
@@ -50,7 +48,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 521,
     previousAvfHistory: "없음",
     adherence: 94,
-    status: "ready",
     createdAt: "2026-04-02",
   },
   {
@@ -67,7 +64,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 395,
     previousAvfHistory: "없음",
     adherence: 78,
-    status: "active",
     createdAt: "2026-05-04",
   },
   {
@@ -84,7 +80,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 402,
     previousAvfHistory: "없음",
     adherence: 88,
-    status: "active",
     createdAt: "2026-04-12",
   },
   {
@@ -101,7 +96,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 318,
     previousAvfHistory: "1회",
     adherence: 25,
-    status: "watch",
     alert: "주간 수행률 25% · 자세 교정 필요",
     createdAt: "2026-05-08",
   },
@@ -119,7 +113,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 562,
     previousAvfHistory: "없음",
     adherence: 96,
-    status: "ready",
     createdAt: "2026-03-28",
   },
   {
@@ -136,7 +129,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 445,
     previousAvfHistory: "없음",
     adherence: 72,
-    status: "active",
     createdAt: "2026-04-20",
   },
   {
@@ -153,7 +145,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 387,
     previousAvfHistory: "2회 이상",
     adherence: 81,
-    status: "ready",
     createdAt: "2026-04-04",
   },
   {
@@ -170,7 +161,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 332,
     previousAvfHistory: "없음",
     adherence: 0,
-    status: "inactive",
     alert: "운동 미시작",
     createdAt: "2026-05-12",
   },
@@ -188,7 +178,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 478,
     previousAvfHistory: "없음",
     adherence: 84,
-    status: "active",
     createdAt: "2026-04-22",
   },
   {
@@ -205,7 +194,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 415,
     previousAvfHistory: "없음",
     adherence: 90,
-    status: "active",
     createdAt: "2026-04-08",
   },
   {
@@ -222,7 +210,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 362,
     previousAvfHistory: "1회",
     adherence: 65,
-    status: "active",
     createdAt: "2026-05-10",
   },
   {
@@ -239,7 +226,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 427,
     previousAvfHistory: "없음",
     adherence: 92,
-    status: "active",
     createdAt: "2026-04-06",
   },
   {
@@ -256,7 +242,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 391,
     previousAvfHistory: "없음",
     adherence: 68,
-    status: "active",
     createdAt: "2026-05-06",
   },
   {
@@ -273,7 +258,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 408,
     previousAvfHistory: "없음",
     adherence: 0,
-    status: "inactive",
     alert: "앱 미설치 안내 필요",
     createdAt: "2026-05-15",
   },
@@ -291,7 +275,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 498,
     previousAvfHistory: "없음",
     adherence: 88,
-    status: "ready",
     createdAt: "2026-04-15",
   },
   {
@@ -308,7 +291,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 354,
     previousAvfHistory: "1회",
     adherence: 70,
-    status: "active",
     createdAt: "2026-05-07",
   },
   {
@@ -325,7 +307,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 432,
     previousAvfHistory: "없음",
     adherence: 80,
-    status: "active",
     createdAt: "2026-04-28",
   },
   {
@@ -342,7 +323,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 462,
     previousAvfHistory: "없음",
     adherence: 91,
-    status: "ready",
     createdAt: "2026-04-01",
   },
   {
@@ -359,7 +339,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 405,
     previousAvfHistory: "없음",
     adherence: 76,
-    status: "active",
     createdAt: "2026-04-30",
   },
   {
@@ -376,7 +355,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 388,
     previousAvfHistory: "없음",
     adherence: 30,
-    status: "watch",
     alert: "운동 누락 4일",
     createdAt: "2026-05-11",
   },
@@ -394,7 +372,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 451,
     previousAvfHistory: "없음",
     adherence: 85,
-    status: "active",
     createdAt: "2026-04-25",
   },
   {
@@ -411,7 +388,6 @@ export const PATIENTS: Patient[] = [
     baselineFlowMlMin: 511,
     previousAvfHistory: "없음",
     adherence: 89,
-    status: "ready",
     createdAt: "2026-04-14",
   },
 ];

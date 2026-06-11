@@ -15,10 +15,6 @@ export async function GET(req: Request) {
       SELECT
         COUNT(*)                          AS total,
         COALESCE(AVG(adherence), 0)       AS avgAdherence,
-        SUM(status = 'active')            AS active,
-        SUM(status = 'watch')             AS watch,
-        SUM(status = 'ready')             AS ready,
-        SUM(status = 'inactive')          AS inactive
       FROM patients
       WHERE institution_id = ?
     `, [institutionId]),
@@ -54,10 +50,6 @@ export async function GET(req: Request) {
   return NextResponse.json({
     patients: {
       total: Number(p.total),
-      active: Number(p.active),
-      watch: Number(p.watch),
-      ready: Number(p.ready),
-      inactive: Number(p.inactive),
       avgAdherence: Math.round(Number(p.avgAdherence)),
     },
     sessions: {

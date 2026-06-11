@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   IconUsers,
   IconChartBar,
-  IconAlertTriangle,
   IconArrowRight,
   IconBellRinging,
   IconPlus,
@@ -21,10 +20,6 @@ import { cn } from "@/lib/utils";
 type DashboardData = {
   patients: {
     total: number;
-    active: number;
-    watch: number;
-    ready: number;
-    inactive: number;
     avgAdherence: number;
   };
   sessions: {
@@ -78,7 +73,6 @@ export default function DashboardPage() {
           icon={<IconUsers size={16} />}
           caption="등록 대상자"
           value={stats ? String(stats.total) : "-"}
-          sub={stats ? `운동 중 ${stats.active}명` : ""}
         />
         <Kpi
           icon={<IconChartBar size={16} />}
@@ -86,13 +80,6 @@ export default function DashboardPage() {
           value={stats ? `${stats.avgAdherence}%` : "-"}
           sub="최근 14일 기준"
           tone={stats && stats.avgAdherence >= 75 ? "teal" : "navy"}
-        />
-        <Kpi
-          icon={<IconAlertTriangle size={16} />}
-          caption="관찰 필요"
-          value={stats ? String(stats.watch) : "-"}
-          sub={stats ? (stats.watch ? "즉시 점검 권장" : "안정 상태") : ""}
-          tone={stats && stats.watch ? "red" : "navy"}
         />
       </div>
 

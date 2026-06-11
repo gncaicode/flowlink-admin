@@ -30,7 +30,7 @@ export const SESSIONS: Session[] = PATIENTS.flatMap((p, i) => {
     const target = kind === "grip" ? 20 : 12;
     const completion = 0.6 + rand() * 0.45;
     const reps = Math.min(target + 5, Math.round(target * completion));
-    const baseScore = p.status === "watch" ? 60 : p.status === "ready" ? 90 : 78;
+    const baseScore = 78;
     const postureScore = Math.max(
       50,
       Math.min(98, Math.round(baseScore + (rand() - 0.5) * 22)),

@@ -11,7 +11,6 @@ import {
   IconCalendar,
 } from "@tabler/icons-react";
 import { Avatar } from "@/components/ui/Avatar";
-import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { cn, formatDate } from "@/lib/utils";
@@ -98,9 +97,6 @@ export function PatientTable({ data }: Props) {
               >
                 순응도 <SortArrow k="adherence" />
               </SortableTh>
-              <th className="text-left py-3 px-3 text-[11px] font-semibold tracking-wide12 uppercase text-ink-500 w-[14%]">
-                상태
-              </th>
               <th className="w-[8%]" />
             </tr>
           </thead>
@@ -115,7 +111,7 @@ export function PatientTable({ data }: Props) {
                   <div className="flex items-center gap-3">
                     <Avatar
                       name={p.name}
-                      tone={p.status === "watch" ? "red" : "navy"}
+                      tone="navy"
                       size={40}
                     />
                     <div className="min-w-0">
@@ -159,14 +155,6 @@ export function PatientTable({ data }: Props) {
                   >
                     {p.adherence}%
                   </span>
-                </td>
-                <td className="py-4 px-3">
-                  <Badge tone={p.status} />
-                  {p.alert && (
-                    <div className="text-[10px] text-red font-medium mt-1 truncate max-w-[180px]">
-                      {p.alert}
-                    </div>
-                  )}
                 </td>
                 <td
                   className="py-4 px-3 relative"

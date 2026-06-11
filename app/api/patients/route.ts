@@ -19,7 +19,6 @@ function rowToPatient(row: Record<string, unknown>): Patient {
     previousAvfHistory: row.previous_avf_history as Patient["previousAvfHistory"],
     program: (row.program as string | null) ?? undefined,
     adherence: row.adherence as number,
-    status: row.status as Patient["status"],
     scheduled: row.scheduled
       ? (row.scheduled as Date).toISOString().slice(0, 10)
       : undefined,
@@ -58,13 +57,13 @@ export async function POST(req: Request) {
     `INSERT INTO patients
       (pid,name,age,gender,surgery_date,surgery_location,anastomosis,surgeon_name,
        baseline_diameter_mm,baseline_flow_ml_min,previous_avf_history,program,
-       adherence,status,scheduled,alert,group_id,created_at,institution_id)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+       adherence,scheduled,alert,group_id,created_at,institution_id)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     [
       body.pid, body.name, body.age, body.gender,
       body.surgeryDate, body.surgeryLocation, body.anastomosis, body.surgeonName,
       body.baselineDiameterMm, body.baselineFlowMlMin, body.previousAvfHistory,
-      body.program ?? null, body.adherence, body.status,
+      body.program ?? null, body.adherence,
       body.scheduled ?? null, body.alert ?? null, body.groupId ?? null, body.createdAt,
       institutionId,
     ]
