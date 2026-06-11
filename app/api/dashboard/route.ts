@@ -14,7 +14,7 @@ export async function GET(req: Request) {
     pool.query(`
       SELECT
         COUNT(*)                          AS total,
-        COALESCE(AVG(adherence), 0)       AS avgAdherence,
+        COALESCE(AVG(adherence), 0)       AS avgAdherence
       FROM patients
       WHERE institution_id = ?
     `, [institutionId]),
