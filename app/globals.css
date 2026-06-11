@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: #1a365d;
+  --navy-light: #2d5282;
+  --navy-faint: #ebf4ff;
+  --red: #e53e3e;
+  --red-light: #fff5f5;
+  --teal: #319795;
+  --teal-light: #e6fffa;
+  --snow: #f7fafc;
+  --ink-700: #2d3748;
+  --ink-500: #718096;
+  --ink-200: #e2e8f0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  color: var(--ink-700);
+  background: var(--snow);
+  font-family: var(--font-montserrat), "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  font-feature-settings: "ss01" on, "cv11" on;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* tabular numerics for clinical data */
+.fl-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" on;
+}
+
+/* FlowLink caption: uppercase Teal tracker */
+.fl-caption {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+/* hide scrollbars in horizontal scrollers */
+.fl-noscroll::-webkit-scrollbar {
+  display: none;
+}
+.fl-noscroll {
+  scrollbar-width: none;
+}
+
+/* dot-line motif backdrop (subtle on light bg) */
+.fl-dot-bg {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(26, 54, 93, 0.08) 1px,
+    transparent 0
+  );
+  background-size: 24px 24px;
+}
