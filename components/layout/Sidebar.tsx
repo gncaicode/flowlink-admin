@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -9,6 +10,7 @@ import {
   IconSettings,
   IconReportMedical,
   IconLogout,
+  IconX,
 } from "@tabler/icons-react";
 import { FLSymbol } from "@/components/brand/FLSymbol";
 import { FLWordmark } from "@/components/brand/FLWordmark";
@@ -51,11 +53,14 @@ const NAV: NavItem[] = [
   { label: "설정", href: "/settings", icon: <IconSettings size={20} /> },
 ];
 
-export function Sidebar() {
+export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
   const logout = useSessionStore((s) => s.logout);
   const institutionName = useSessionStore((s) => s.institutionName);
+
+  // 페이지 이동 시 모바일 사이드바 닫기
+  useEffect(() => { onClose(); }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function onLogout() {
     logout();
@@ -63,7 +68,21 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="w-[240px] bg-navy text-white flex flex-col h-screen sticky top-0">
+    <aside className={cn(
+      "w-[240px] bg-navy text-white flex flex-col h-screen z-50",
+      "fixed top-0 left-0 transition-transform duration-300 ease-in-out",
+      isOpen ? "translate-x-0" : "-translate-x-full",
+      "lg:sticky lg:top-0 lg:translate-x-0 lg:shrink-0",
+    )}>
+      {/* 모바일 닫기 버튼 */}
+      <button
+        onClick={onClose}
+        className="lg:hidden absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-white rounded-btn hover:bg-white/10 transition-colors"
+        aria-label="메뉴 닫기"
+      >
+        <IconX size={18} />
+      </button>
+
       <Link href="/dashboard" className="px-5 pt-6 pb-5 flex items-center gap-2.5">
         <FLSymbol size={32} dark />
         <FLWordmark size={18} dark />

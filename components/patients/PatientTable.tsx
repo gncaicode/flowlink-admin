@@ -76,7 +76,8 @@ export function PatientTable({ data }: Props) {
   return (
     <>
       <div className="bg-white rounded-card border-[0.5px] border-ink-200 overflow-hidden">
-        <table className="w-full text-[13px]">
+        <div className="overflow-x-auto">
+        <table className="w-full text-[13px] min-w-[560px]">
           <thead>
             <tr className="border-b border-ink-200 bg-snow/50">
               <SortableTh
@@ -194,6 +195,7 @@ export function PatientTable({ data }: Props) {
             ))}
           </tbody>
         </table>
+        </div>
         {sorted.length === 0 && (
           <div className="py-16 text-center text-ink-500 text-[13px]">
             조건에 맞는 대상자가 없습니다.
