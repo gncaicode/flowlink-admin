@@ -63,15 +63,15 @@ export function PatientTable({ data }: Props) {
     <>
       <div className="bg-white rounded-card border-[0.5px] border-ink-200 overflow-hidden">
         <div className="overflow-x-auto">
-        <table className="w-full text-[13px] min-w-[560px]">
+        <table className="w-full text-[13px] min-w-[500px]">
           <thead>
             <tr className="border-b border-ink-200 bg-snow/50">
-              <SortableTh
-                onClick={() => toggleSort("name")}
-                className="pl-5"
-              >
-                대상자 <SortArrow k="name" />
+              <SortableTh onClick={() => toggleSort("name")} className="pl-5">
+                이름 <SortArrow k="name" />
               </SortableTh>
+              <Th>환자번호</Th>
+              <Th>나이</Th>
+              <Th>성별</Th>
               <th className="w-[8%]" />
             </tr>
           </thead>
@@ -82,30 +82,17 @@ export function PatientTable({ data }: Props) {
                 className="border-b border-ink-200/70 last:border-b-0 hover:bg-snow/60 group transition-colors cursor-pointer"
                 onClick={() => router.push(`/patients/${p.pid}`)}
               >
-                <td className="py-4 px-3 pl-5">
+                <td className="py-3.5 px-3 pl-5">
                   <div className="flex items-center gap-3">
-                    <Avatar
-                      name={p.name}
-                      tone="navy"
-                      size={40}
-                    />
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-navy text-[14px]">
-                          {p.name}
-                        </span>
-                        <span className="text-[11px] text-ink-500">
-                          {p.age}세 · {p.gender}
-                        </span>
-                      </div>
-                      <div className="text-[11px] text-ink-500 fl-num mt-0.5">
-                        {p.pid}
-                      </div>
-                    </div>
+                    <Avatar name={p.name} tone="navy" size={36} />
+                    <span className="font-bold text-navy text-[14px]">{p.name}</span>
                   </div>
                 </td>
+                <td className="py-3.5 px-4 fl-num text-ink-600 text-[13px]">{p.pid}</td>
+                <td className="py-3.5 px-4 text-ink-700 text-[13px]">{p.age}세</td>
+                <td className="py-3.5 px-4 text-ink-700 text-[13px]">{p.gender === "M" ? "남성" : "여성"}</td>
                 <td
-                  className="py-4 px-3 relative"
+                  className="py-3.5 px-3 relative"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
@@ -184,6 +171,14 @@ export function PatientTable({ data }: Props) {
         </p>
       </Modal>
     </>
+  );
+}
+
+function Th({ children }: { children: React.ReactNode }) {
+  return (
+    <th className="text-left py-3 px-4 text-[11px] font-semibold tracking-wide uppercase text-ink-500">
+      {children}
+    </th>
   );
 }
 
