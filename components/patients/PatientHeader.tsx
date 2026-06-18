@@ -1,9 +1,6 @@
 "use client";
 import Link from "next/link";
-import {
-  IconChevronLeft,
-  IconBellRinging,
-} from "@tabler/icons-react";
+import { IconChevronLeft } from "@tabler/icons-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { TabNav } from "@/components/ui/Tabs";
 import { Caption } from "@/components/ui/Caption";
@@ -41,14 +38,6 @@ export function PatientHeader({ patient }: Props) {
             </div>
           </div>
         </div>
-        {p.alert && (
-          <div className="bg-red-light border border-red/20 text-red px-3 py-2 rounded-card max-w-[260px] flex items-start gap-2">
-            <IconBellRinging size={14} className="mt-0.5 flex-shrink-0" />
-            <span className="text-[11px] font-semibold leading-snug">
-              {p.alert}
-            </span>
-          </div>
-        )}
       </div>
 
       <div className="mt-5">

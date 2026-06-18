@@ -1,11 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import {
   IconUsers,
-  IconArrowRight,
-  IconBellRinging,
   IconPlus,
   IconClockPlay,
   IconActivity,
@@ -18,7 +15,6 @@ import { Caption } from "@/components/ui/Caption";
 import { LinkButton } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { EcgLineChart } from "@/components/charts/EcgLineChart";
-import { usePatientsStore } from "@/lib/store/patients";
 import { useSessionStore } from "@/lib/store/session";
 import { formatDate, cn } from "@/lib/utils";
 
@@ -42,7 +38,6 @@ type DashboardData = {
 
 export default function DashboardPage() {
   const router = useRouter();
-  const patients = usePatientsStore((s) => s.patients);
   const token = useSessionStore((s) => s.token);
   const [data, setData] = useState<DashboardData | null>(null);
 
@@ -54,8 +49,6 @@ export default function DashboardPage() {
       .then(setData)
       .catch(console.error);
   }, [token]);
-
-  const recentAlerts = patients.filter((p) => p.alert).slice(0, 5);
 
   return (
     <div>
@@ -156,47 +149,18 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* 추이 차트 + 알림 */}
-      <div className="mt-6 grid lg:grid-cols-2 gap-6">
-        {/* 30일 세션 추이 */}
+      {/* 30일 세션 추이 */}
+      <div className="mt-6">
         <Card className="!p-6">
           <Caption tone="ink">30일 세션 추이</Caption>
           <div className="mt-1 text-[14px] font-bold text-navy mb-4">날짜별 측정 세션 수</div>
           {data && data.trend.length > 0 ? (
-            <EcgLineChart data={data.trend} yLabel="건" color="#1A365D" height={180} />
+            <EcgLineChart data={data.trend} yLabel="건" color="#1A365D" height={200} />
           ) : (
-            <div className="h-[180px] flex items-center justify-center text-[13px] text-ink-500">
+            <div className="h-[200px] flex items-center justify-center text-[13px] text-ink-500">
               데이터가 없습니다.
             </div>
           )}
-        </Card>
-
-        {/* 알림 */}
-        <Card className="!p-6">
-          <div className="flex items-center justify-between">
-            <Caption tone="ink">최근 알림</Caption>
-            <Badge tone="watch" label={`${recentAlerts.length}건`} />
-          </div>
-          <div className="mt-4 space-y-2.5">
-            {recentAlerts.length === 0 ? (
-              <div className="text-[12px] text-ink-500 py-3">현재 알림이 없습니다.</div>
-            ) : (
-              recentAlerts.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/patients/${p.pid}`}
-                  className="flex items-center gap-3 p-3 -mx-1 rounded-card hover:bg-snow transition-colors"
-                >
-                  <IconBellRinging size={16} className="text-red flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <div className="text-[13px] font-bold text-navy">{p.name}</div>
-                    <div className="text-[11px] text-ink-500 truncate">{p.alert}</div>
-                  </div>
-                  <IconArrowRight size={14} className="text-ink-500" />
-                </Link>
-              ))
-            )}
-          </div>
         </Card>
       </div>
     </div>
