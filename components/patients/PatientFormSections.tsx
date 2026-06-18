@@ -146,7 +146,7 @@ export function Step1Basic({
         />
       </div>
       <Input
-        label="앱 로그인 비밀번호"
+        label="비밀번호"
         placeholder="환자에게 전달할 비밀번호"
         value={v.password}
         onChange={(e) => set({ password: e.target.value })}

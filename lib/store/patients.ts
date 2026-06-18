@@ -14,7 +14,7 @@ type State = {
   patients: Patient[];
   loaded: boolean;
   fetch: () => Promise<void>;
-  add: (p: Omit<Patient, "id">) => Promise<void>;
+  add: (p: Omit<Patient, "id"> & { password?: string }) => Promise<void>;
   update: (id: number, patch: Partial<Patient>) => Promise<void>;
   remove: (id: number) => Promise<void>;
 };

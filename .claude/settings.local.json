@@ -12,7 +12,8 @@
       "Bash(echo \"PID: $!\")",
       "Read(//tmp/**)",
       "Bash(pkill -f \"next\")",
-      "Read(//private/tmp/**)"
+      "Read(//private/tmp/**)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

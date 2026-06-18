@@ -2,96 +2,55 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconChevronLeft,
-  IconCheck,
-} from "@tabler/icons-react";
+import { IconChevronLeft, IconCheck } from "@tabler/icons-react";
 import { Caption } from "@/components/ui/Caption";
 import { Button } from "@/components/ui/Button";
-import { Stepper } from "@/components/ui/Stepper";
-import {
-  EMPTY_DRAFT,
-  Step1Basic,
-  Step2Avf,
-  Step3Prescription,
-  type PatientDraft,
-} from "@/components/patients/PatientFormSections";
+import { Input } from "@/components/ui/Input";
+import { IconUser, IconLock } from "@tabler/icons-react";
+import { cn } from "@/lib/utils";
 import { usePatientsStore } from "@/lib/store/patients";
-
-const STEPS = [
-  { label: "기본 정보", sub: "환자 인적사항을 입력합니다" },
-  { label: "AVF 정보", sub: "수술 정보와 기저 상태" },
-  { label: "운동 처방", sub: "처방할 운동과 강도" },
-];
 
 export default function NewPatientPage() {
   const router = useRouter();
   const addPatient = usePatientsStore((s) => s.add);
-  const [step, setStep] = useState(0);
-  const [draft, setDraft] = useState<PatientDraft>(EMPTY_DRAFT);
+
+  const [name, setName] = useState("");
+  const [pid, setPid] = useState("");
+  const [password, setPassword] = useState("");
+  const [age, setAge] = useState<number | "">("");
+  const [gender, setGender] = useState<"M" | "F">("F");
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  function set(patch: Partial<PatientDraft>) {
-    setDraft((d) => ({ ...d, ...patch }));
-  }
-
-  function validate(): boolean {
+  async function handleSubmit() {
     setError(null);
-    if (step === 0) {
-      if (!draft.name || !draft.pid || !draft.age) {
-        setError("기본 정보를 모두 입력해 주세요.");
-        return false;
-      }
-      if (!draft.password) {
-        setError("앱 로그인 비밀번호를 입력해 주세요.");
-        return false;
-      }
-    } else if (step === 1) {
-      if (!draft.surgeryDate || !draft.surgeonName) {
-        setError("수술일과 담당 외과의를 입력해 주세요.");
-        return false;
-      }
-      if (!draft.baselineDiameterMm || !draft.baselineFlowMlMin) {
-        setError("기저 혈관 직경과 혈류량을 입력해 주세요.");
-        return false;
-      }
-    } else if (step === 2) {
-      if (!draft.prescriptions.some((p) => p.enabled)) {
-        setError("최소 한 가지 운동을 처방해 주세요.");
-        return false;
-      }
+    if (!name || !pid) {
+      setError("이름과 환자번호를 입력해 주세요.");
+      return;
     }
-    return true;
-  }
-
-  async function next() {
-    if (!validate()) return;
-    if (step < 2) {
-      setStep(step + 1);
+    if (!password) {
+      setError("비밀번호를 입력해 주세요.");
       return;
     }
     setLoading(true);
     try {
-      const patient = {
-        pid: draft.pid,
-        name: draft.name,
-        password: draft.password,
-        age: Number(draft.age) || 0,
-        gender: draft.gender,
-        surgeryDate: draft.surgeryDate,
-        surgeryLocation: draft.surgeryLocation,
-        anastomosis: draft.anastomosis,
-        surgeonName: draft.surgeonName,
-        baselineDiameterMm: Number(draft.baselineDiameterMm) || 0,
-        baselineFlowMlMin: Number(draft.baselineFlowMlMin) || 0,
-        previousAvfHistory: draft.previousAvfHistory,
+      await addPatient({
+        pid,
+        name,
+        password,
+        age: Number(age) || 0,
+        gender,
+        surgeryDate: new Date().toISOString().slice(0, 10),
+        surgeryLocation: "좌측 요골동맥",
+        anastomosis: "단단 문합",
+        surgeonName: "",
+        baselineDiameterMm: 0,
+        baselineFlowMlMin: 0,
+        previousAvfHistory: "없음",
         adherence: 0,
         createdAt: new Date().toISOString().slice(0, 10),
-      };
-      await addPatient(patient);
+      });
       router.push("/patients");
     } catch (e) {
       setError(e instanceof Error ? e.message : "등록에 실패했습니다.");
@@ -108,65 +67,94 @@ export default function NewPatientPage() {
       >
         <IconChevronLeft size={14} /> 대상자 목록으로
       </Link>
-      <div className="mt-3 flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <Caption>NEW PATIENT</Caption>
-          <h1 className="mt-2 text-[28px] font-bold text-navy tracking-tight">
-            대상자 등록
-          </h1>
-          <p className="mt-1 text-[13px] text-ink-500">
-            기관에 새 AVF 환자를 등록합니다. 모든 단계 입력 후 운동 처방을
-            확정하면 모바일 앱에 자동 연동됩니다.
-          </p>
-        </div>
-        <div className="px-3 py-2 rounded-md bg-teal-light text-teal text-[10px] font-bold tracking-wider">
-          STEP {step + 1} / 3
-        </div>
+
+      <div className="mt-3">
+        <Caption>NEW PATIENT</Caption>
+        <h1 className="mt-2 text-[28px] font-bold text-navy tracking-tight">
+          대상자 등록
+        </h1>
+        <p className="mt-1 text-[13px] text-ink-500">
+          기본 정보를 입력하고 대상자를 등록합니다.
+        </p>
       </div>
 
-      <div className="mt-8 grid lg:grid-cols-[260px,1fr] gap-8">
-        <aside className="lg:sticky lg:top-24 self-start">
-          <Stepper steps={STEPS} current={step} orientation="vertical" />
-        </aside>
+      <div className="mt-7 bg-white border border-ink-200 rounded-card p-6 flex flex-col gap-4">
+        <div className="grid grid-cols-2 gap-3">
+          <Input
+            label="이름"
+            placeholder="환자 이름"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            leading={<IconUser size={16} />}
+          />
+          <Input
+            label="환자번호 (PID)"
+            placeholder="P-2026-00000"
+            value={pid}
+            onChange={(e) => setPid(e.target.value)}
+          />
+        </div>
 
-        <div className="flex flex-col gap-5 min-w-0">
-          {step === 0 && <Step1Basic v={draft} set={set} />}
-          {step === 1 && <Step2Avf v={draft} set={set} />}
-          {step === 2 && <Step3Prescription v={draft} set={set} />}
+        <Input
+          label="비밀번호"
+          placeholder="환자에게 전달할 비밀번호"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          type="password"
+          leading={<IconLock size={16} />}
+          caption="환자가 모바일 앱에 로그인할 때 사용합니다."
+        />
 
-          {error && (
-            <div className="bg-red-light border border-red/20 text-red text-[12px] font-semibold px-4 py-3 rounded-card">
-              {error}
+        <div className="grid grid-cols-2 gap-3">
+          <Input
+            label="연령"
+            placeholder="58"
+            value={age === "" ? "" : String(age)}
+            onChange={(e) =>
+              setAge(e.target.value === "" ? "" : Math.max(0, Number(e.target.value)))
+            }
+            type="number"
+          />
+          <div>
+            <div className="text-[11px] font-semibold tracking-wide12 uppercase text-ink-500 mb-2">
+              성별
             </div>
-          )}
-
-          <div className="flex gap-3 pt-2">
-            {step > 0 && (
-              <Button
-                variant="secondary"
-                size="lg"
-                type="button"
-                onClick={() => setStep(step - 1)}
-              >
-                <IconArrowLeft size={18} /> 이전
-              </Button>
-            )}
-            <Button
-              variant="primary"
-              size="lg"
-              type="button"
-              onClick={next}
-              className="flex-1"
-              disabled={loading}
-            >
-              {step === 2 ? (
-                loading ? <>처리 중...</> : <>등록 완료 <IconCheck size={18} /></>
-              ) : (
-                <>다음 단계로 <IconArrowRight size={18} /></>
-              )}
-            </Button>
+            <div className="grid grid-cols-2 gap-2">
+              {(["M", "F"] as const).map((g) => (
+                <button
+                  key={g}
+                  type="button"
+                  onClick={() => setGender(g)}
+                  className={cn(
+                    "h-10 rounded-btn font-semibold text-[13px] transition-colors",
+                    gender === g
+                      ? "bg-navy text-white border border-navy"
+                      : "bg-white border border-ink-200 text-ink-700 hover:border-navy/40",
+                  )}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
+
+        {error && (
+          <div className="bg-red-light border border-red/20 text-red text-[12px] font-semibold px-4 py-3 rounded-card">
+            {error}
+          </div>
+        )}
+
+        <Button
+          variant="primary"
+          size="lg"
+          type="button"
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full"
+        >
+          {loading ? "처리 중..." : <><IconCheck size={18} /> 등록 완료</>}
+        </Button>
       </div>
     </div>
   );

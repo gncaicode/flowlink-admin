@@ -7,18 +7,16 @@ import {
   IconDots,
   IconEdit,
   IconTrash,
-  IconActivityHeartbeat,
-  IconCalendar,
 } from "@tabler/icons-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import { cn, formatDate } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import type { Patient } from "@/types/domain";
 import { useRouter } from "next/navigation";
 import { usePatientsStore } from "@/lib/store/patients";
 
-type SortKey = "name" | "surgeryDate" | "adherence";
+type SortKey = "name";
 
 type Props = {
   data: Patient[];
@@ -27,7 +25,7 @@ type Props = {
 export function PatientTable({ data }: Props) {
   const router = useRouter();
   const remove = usePatientsStore((s) => s.remove);
-  const [sortKey, setSortKey] = useState<SortKey>("surgeryDate");
+  const [sortKey, setSortKey] = useState<SortKey>("name");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [menuFor, setMenuFor] = useState<number | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<Patient | null>(null);
@@ -35,20 +33,8 @@ export function PatientTable({ data }: Props) {
   const sorted = useMemo(() => {
     const copy = [...data];
     copy.sort((a, b) => {
-      let av: string | number;
-      let bv: string | number;
-      if (sortKey === "name") {
-        av = a.name;
-        bv = b.name;
-      } else if (sortKey === "surgeryDate") {
-        av = a.surgeryDate;
-        bv = b.surgeryDate;
-      } else {
-        av = a.adherence;
-        bv = b.adherence;
-      }
-      if (av < bv) return sortDir === "asc" ? -1 : 1;
-      if (av > bv) return sortDir === "asc" ? 1 : -1;
+      if (a.name < b.name) return sortDir === "asc" ? -1 : 1;
+      if (a.name > b.name) return sortDir === "asc" ? 1 : -1;
       return 0;
     });
     return copy;
@@ -82,21 +68,9 @@ export function PatientTable({ data }: Props) {
             <tr className="border-b border-ink-200 bg-snow/50">
               <SortableTh
                 onClick={() => toggleSort("name")}
-                className="pl-5 w-[26%]"
+                className="pl-5"
               >
                 대상자 <SortArrow k="name" />
-              </SortableTh>
-              <SortableTh
-                onClick={() => toggleSort("surgeryDate")}
-                className="w-[20%]"
-              >
-                수술 정보 <SortArrow k="surgeryDate" />
-              </SortableTh>
-              <SortableTh
-                onClick={() => toggleSort("adherence")}
-                className="w-[12%]"
-              >
-                순응도 <SortArrow k="adherence" />
               </SortableTh>
               <th className="w-[8%]" />
             </tr>
@@ -129,33 +103,6 @@ export function PatientTable({ data }: Props) {
                       </div>
                     </div>
                   </div>
-                </td>
-                <td className="py-4 px-3">
-                  <div className="flex items-center gap-1.5 text-[12px] text-ink-700">
-                    <IconCalendar size={12} className="text-ink-500" />
-                    <span className="fl-num">{formatDate(p.surgeryDate)}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-[11px] text-ink-500 mt-1">
-                    <IconActivityHeartbeat
-                      size={12}
-                      className="text-ink-500"
-                    />
-                    {p.surgeryLocation}
-                  </div>
-                </td>
-                <td className="py-4 px-3">
-                  <span
-                    className={cn(
-                      "text-[14px] font-bold fl-num",
-                      p.adherence >= 80
-                        ? "text-teal"
-                        : p.adherence < 60
-                          ? "text-red"
-                          : "text-ink-700",
-                    )}
-                  >
-                    {p.adherence}%
-                  </span>
                 </td>
                 <td
                   className="py-4 px-3 relative"

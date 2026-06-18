@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   IconUsers,
-  IconChartBar,
   IconArrowRight,
   IconBellRinging,
   IconPlus,
@@ -11,7 +10,6 @@ import {
 import { Card } from "@/components/ui/Card";
 import { Caption } from "@/components/ui/Caption";
 import { LinkButton } from "@/components/ui/Button";
-import { EcgLineChart } from "@/components/charts/EcgLineChart";
 import { Badge } from "@/components/ui/Badge";
 import { usePatientsStore } from "@/lib/store/patients";
 import { useSessionStore } from "@/lib/store/session";
@@ -45,8 +43,6 @@ export default function DashboardPage() {
   }, [token]);
 
   const stats = data?.patients;
-  const sessionStats = data?.sessions;
-  const trend = data?.trend ?? [];
 
   const recentAlerts = patients.filter((p) => p.alert).slice(0, 5);
 
@@ -68,50 +64,15 @@ export default function DashboardPage() {
       </div>
 
       {/* KPI grid */}
-      <div className="mt-7 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="mt-7 flex gap-4">
         <Kpi
           icon={<IconUsers size={16} />}
           caption="등록 대상자"
           value={stats ? String(stats.total) : "-"}
         />
-        <Kpi
-          icon={<IconChartBar size={16} />}
-          caption="평균 순응도"
-          value={stats ? `${stats.avgAdherence}%` : "-"}
-          sub="최근 14일 기준"
-          tone={stats && stats.avgAdherence >= 75 ? "teal" : "navy"}
-        />
       </div>
 
-      <div className="mt-6 grid lg:grid-cols-[1.6fr,1fr] gap-6">
-        {/* Trend chart */}
-        <Card className="!p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <Caption>POSTURE ACCURACY TREND</Caption>
-              <div className="mt-1 text-[18px] font-bold text-navy">
-                코호트 평균 자세 정확도
-              </div>
-            </div>
-            <div className="text-[11px] text-ink-500">최근 30일</div>
-          </div>
-          <div className="mt-3">
-            {trend.length > 0 ? (
-              <EcgLineChart data={trend} yLabel="ACCURACY %" />
-            ) : (
-              <div className="h-[160px] flex items-center justify-center text-[12px] text-ink-500">
-                세션 데이터가 없습니다.
-              </div>
-            )}
-          </div>
-          <div className="mt-3 flex items-center gap-4 text-[11px] text-ink-500">
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-teal" /> 평균 정확도
-            </span>
-            <span>총 {sessionStats?.total ?? 0}개 세션 집계</span>
-          </div>
-        </Card>
-
+      <div className="mt-6">
         {/* Alerts */}
         <Card className="!p-6">
           <div className="flex items-center justify-between">
@@ -140,7 +101,6 @@ export default function DashboardPage() {
           </div>
         </Card>
       </div>
-
     </div>
   );
 }

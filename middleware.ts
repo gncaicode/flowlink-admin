@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken, extractBearer } from "@/lib/auth";
 
 // JWT 검증이 필요 없는 경로
-const PUBLIC_PATHS = ["/api/auth/login", "/api/auth/signup"];
+const PUBLIC_PATHS = ["/api/auth/login", "/api/auth/signup", "/api/auth/patient-login"];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

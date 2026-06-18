@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import pool from "@/lib/db";
 import type { Patient } from "@/types/domain";
 
@@ -42,7 +43,8 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   const id = parseInt(params.id);
-  const patch = await req.json() as Partial<Patient>;
+  const body = await req.json() as Partial<Patient> & { password?: string };
+  const patch = body;
   const fieldMap: Record<string, string> = {
     pid: "pid", name: "name", age: "age", gender: "gender",
     surgeryDate: "surgery_date", surgeryLocation: "surgery_location",
@@ -62,6 +64,11 @@ export async function PATCH(
       values.push((patch as Record<string, unknown>)[key] ?? null);
     }
   }
+  if (body.password) {
+    sets.push("password_hash = ?");
+    values.push(await bcrypt.hash(body.password, 10));
+  }
+
   if (sets.length === 0) return NextResponse.json({ ok: true });
 
   values.push(id);

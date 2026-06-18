@@ -11,11 +11,11 @@ import {
   IconList,
 } from "@tabler/icons-react";
 import { Card } from "@/components/ui/Card";
+import { EcgLineChart } from "@/components/charts/EcgLineChart";
 import { Caption } from "@/components/ui/Caption";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import { EcgLineChart } from "@/components/charts/EcgLineChart";
 import { usePatientsStore } from "@/lib/store/patients";
 import { useSessionsStore } from "@/lib/store/sessions";
 import { formatDate, cn } from "@/lib/utils";
@@ -41,10 +41,6 @@ export default function PatientSessionsPage({
 
   // 차트용 데이터: 날짜 오름차순 (최대 30개)
   const chartSessions = [...sessions].reverse().slice(-30);
-  const scoreData = chartSessions.map((s) => ({
-    label: formatDate(s.date).slice(5),
-    value: s.postureScore,
-  }));
   const completionData = chartSessions.map((s) => ({
     label: formatDate(s.date).slice(5),
     value: s.repsTarget > 0 ? Math.round((s.repsCompleted / s.repsTarget) * 100) : 0,
@@ -54,10 +50,6 @@ export default function PatientSessionsPage({
     value: Math.round((s.durationSec / 60) * 10) / 10,
   }));
 
-  const avgScore =
-    sessions.length > 0
-      ? Math.round(sessions.reduce((a, s) => a + s.postureScore, 0) / sessions.length)
-      : 0;
   const avgCompletion =
     sessions.length > 0
       ? Math.round(
@@ -118,20 +110,11 @@ export default function PatientSessionsPage({
         /* ─── 그래프 뷰 ─── */
         <div className="flex flex-col gap-5">
           {/* 요약 stat */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <SummaryStat label="평균 자세 정확도" value={`${avgScore}%`}
-              tone={avgScore >= 80 ? "teal" : avgScore < 65 ? "red" : "navy"} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <SummaryStat label="평균 완료율" value={`${avgCompletion}%`}
               tone={avgCompletion >= 80 ? "teal" : avgCompletion < 60 ? "red" : "navy"} />
             <SummaryStat label="총 운동 시간" value={`${totalMinutes}분`} tone="navy" />
           </div>
-
-          {/* 자세 정확도 추이 */}
-          <Card className="!p-5">
-            <Caption tone="ink">POSTURE SCORE TREND</Caption>
-            <div className="mt-1 text-[14px] font-bold text-navy mb-4">자세 정확도 추이</div>
-            <EcgLineChart data={scoreData} yLabel="SCORE %" color="#319795" height={200} />
-          </Card>
 
           {/* 완료율 + 소요시간 */}
           <div className="grid lg:grid-cols-2 gap-5">
@@ -157,7 +140,6 @@ export default function PatientSessionsPage({
                 <Th>일자</Th>
                 <Th>운동</Th>
                 <Th>완료 / 목표</Th>
-                <Th>자세 정확도</Th>
                 <Th>소요 시간</Th>
                 <Th>피드백</Th>
                 <th className="w-[5%]" />
@@ -190,25 +172,6 @@ export default function PatientSessionsPage({
                   <td className="py-3.5 px-4 fl-num">
                     <span className="font-bold text-navy">{s.repsCompleted}</span>
                     <span className="text-ink-500"> / {s.repsTarget}</span>
-                  </td>
-                  <td className="py-3.5 px-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-24 h-1.5 bg-ink-100 rounded-full overflow-hidden">
-                        <div
-                          className={cn(
-                            "h-full rounded-full",
-                            s.postureScore >= 80 ? "bg-teal" : s.postureScore < 65 ? "bg-red" : "bg-navy",
-                          )}
-                          style={{ width: `${s.postureScore}%` }}
-                        />
-                      </div>
-                      <span className={cn(
-                        "fl-num font-bold text-[13px]",
-                        s.postureScore >= 80 ? "text-teal" : s.postureScore < 65 ? "text-red" : "text-navy",
-                      )}>
-                        {s.postureScore}%
-                      </span>
-                    </div>
                   </td>
                   <td className="py-3.5 px-4 fl-num text-ink-700">
                     {Math.floor(s.durationSec / 60)}분 {s.durationSec % 60}초
