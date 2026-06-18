@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/Input";
 import {
   IconCalendar,
   IconUser,
+  IconLock,
   IconActivityHeartbeat,
   IconBarbell,
   IconHandGrab,
@@ -19,6 +20,7 @@ import type {
 export type PatientDraft = {
   name: string;
   pid: string;
+  password: string;
   age: number | "";
   gender: "M" | "F";
   surgeryDate: string;
@@ -41,6 +43,7 @@ export type PatientDraft = {
 export const EMPTY_DRAFT: PatientDraft = {
   name: "",
   pid: "",
+  password: "",
   age: "",
   gender: "F",
   surgeryDate: "",
@@ -142,6 +145,15 @@ export function Step1Basic({
           onChange={(e) => set({ pid: e.target.value })}
         />
       </div>
+      <Input
+        label="앱 로그인 비밀번호"
+        placeholder="환자에게 전달할 비밀번호"
+        value={v.password}
+        onChange={(e) => set({ password: e.target.value })}
+        type="password"
+        leading={<IconLock size={16} />}
+        caption="환자가 모바일 앱에 로그인할 때 사용합니다."
+      />
       <div className="grid grid-cols-2 gap-3">
         <Input
           label="연령"

@@ -45,6 +45,10 @@ export default function NewPatientPage() {
         setError("기본 정보를 모두 입력해 주세요.");
         return false;
       }
+      if (!draft.password) {
+        setError("앱 로그인 비밀번호를 입력해 주세요.");
+        return false;
+      }
     } else if (step === 1) {
       if (!draft.surgeryDate || !draft.surgeonName) {
         setError("수술일과 담당 외과의를 입력해 주세요.");
@@ -74,6 +78,7 @@ export default function NewPatientPage() {
       const patient = {
         pid: draft.pid,
         name: draft.name,
+        password: draft.password,
         age: Number(draft.age) || 0,
         gender: draft.gender,
         surgeryDate: draft.surgeryDate,

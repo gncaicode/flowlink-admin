@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import pool from "@/lib/db";
 import { verifyToken, extractBearer } from "@/lib/auth";
 import type { Patient } from "@/types/domain";
@@ -52,20 +53,22 @@ export async function POST(req: Request) {
   const institutionId = await getInstitutionId(req);
   if (!institutionId) return NextResponse.json({ error: "인증 오류" }, { status: 401 });
 
-  const body = await req.json() as Omit<Patient, "id">;
+  const body = await req.json() as Omit<Patient, "id"> & { password?: string };
+  const passwordHash = body.password ? await bcrypt.hash(body.password, 10) : null;
+
   await pool.query(
     `INSERT INTO patients
       (pid,name,age,gender,surgery_date,surgery_location,anastomosis,surgeon_name,
        baseline_diameter_mm,baseline_flow_ml_min,previous_avf_history,program,
-       adherence,scheduled,alert,group_id,created_at,institution_id)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+       adherence,scheduled,alert,group_id,created_at,institution_id,password_hash)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     [
       body.pid, body.name, body.age, body.gender,
       body.surgeryDate, body.surgeryLocation, body.anastomosis, body.surgeonName,
       body.baselineDiameterMm, body.baselineFlowMlMin, body.previousAvfHistory,
       body.program ?? null, body.adherence,
       body.scheduled ?? null, body.alert ?? null, body.groupId ?? null, body.createdAt,
-      institutionId,
+      institutionId, passwordHash,
     ]
   );
   return NextResponse.json({ ok: true });
