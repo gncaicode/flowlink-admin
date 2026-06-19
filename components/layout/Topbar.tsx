@@ -1,11 +1,13 @@
 "use client";
-import { IconBell, IconSearch, IconMenu2 } from "@tabler/icons-react";
+import { IconSearch, IconMenu2 } from "@tabler/icons-react";
 import { useSessionStore } from "@/lib/store/session";
 
 export function Topbar({ onMenuToggle }: { onMenuToggle: () => void }) {
+  const username = useSessionStore((s) => s.username);
   const email = useSessionStore((s) => s.email);
   const institutionName = useSessionStore((s) => s.institutionName);
-  const initial = (email || "C").charAt(0).toUpperCase();
+  const displayName = username || email || "admin";
+  const initial = displayName.charAt(0).toUpperCase();
   return (
     <header className="sticky top-0 z-30 bg-white/85 backdrop-blur-md border-b border-ink-200 px-4 lg:px-8 h-16 flex items-center gap-3">
       {/* 모바일 햄버거 버튼 */}
@@ -31,19 +33,12 @@ export function Topbar({ onMenuToggle }: { onMenuToggle: () => void }) {
       </div>
 
       <div className="ml-auto flex items-center gap-2">
-        <button
-          aria-label="알림"
-          className="relative w-10 h-10 rounded-full hover:bg-snow flex items-center justify-center text-ink-700"
-        >
-          <IconBell size={20} stroke={1.6} />
-          <span className="absolute top-2 right-2.5 w-2 h-2 rounded-full bg-red border-2 border-white" />
-        </button>
         <div className="w-9 h-9 rounded-full bg-navy text-white flex items-center justify-center font-bold text-[13px]">
           {initial}
         </div>
         <div className="hidden md:block leading-tight pr-1">
           <div className="text-[12px] font-bold text-navy">
-            {email || "clinician@hospital.kr"}
+            {displayName}
           </div>
           <div className="text-[10px] text-ink-500">{institutionName}</div>
         </div>

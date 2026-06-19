@@ -2,11 +2,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { IconChevronLeft, IconCheck } from "@tabler/icons-react";
+import { IconChevronLeft, IconCheck, IconUser, IconLock, IconEye, IconEyeOff } from "@tabler/icons-react";
 import { Caption } from "@/components/ui/Caption";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { IconUser, IconLock } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { usePatientsStore } from "@/lib/store/patients";
 
@@ -20,6 +19,7 @@ export default function NewPatientPage() {
   const [age, setAge] = useState<number | "">("");
   const [gender, setGender] = useState<"M" | "F">("F");
 
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -100,8 +100,13 @@ export default function NewPatientPage() {
           placeholder="환자에게 전달할 비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          type="password"
+          type={showPassword ? "text" : "password"}
           leading={<IconLock size={16} />}
+          trailing={
+            <button type="button" onClick={() => setShowPassword((v) => !v)} className="text-ink-500 hover:text-navy transition-colors">
+              {showPassword ? <IconEyeOff size={16} /> : <IconEye size={16} />}
+            </button>
+          }
           caption="환자가 모바일 앱에 로그인할 때 사용합니다."
         />
 

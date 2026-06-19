@@ -36,13 +36,14 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password, remember }),
       });
-      const data = await res.json() as { email: string; institutionId: number | null; institutionName?: string; token: string; error?: string };
+      const data = await res.json() as { email: string; username?: string; institutionId: number | null; institutionName?: string; token: string; error?: string };
       if (!res.ok) {
         setError(data.error ?? "로그인에 실패했습니다.");
         return;
       }
       login({
         email: data.email,
+        username: data.username ?? null,
         institutionId: data.institutionId,
         institutionName: data.institutionName ?? null,
         token: data.token,

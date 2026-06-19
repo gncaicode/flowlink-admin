@@ -43,7 +43,6 @@ export function PatientHeader({ patient }: Props) {
       <div className="mt-5">
         <TabNav
           tabs={[
-            { label: "개요", href: `/patients/${p.pid}` },
             { label: "측정 세션", href: `/patients/${p.pid}/sessions` },
             { label: "정보 수정", href: `/patients/${p.pid}/edit` },
           ]}

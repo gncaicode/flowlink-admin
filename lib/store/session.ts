@@ -8,12 +8,14 @@ type SessionState = {
   _hasHydrated: boolean;
   authed: boolean;
   email: string | null;
+  username: string | null;
   institutionId: number | null;
   institutionName: string | null;
   token: string | null;
   remember: boolean;
   login: (params: {
     email: string;
+    username?: string | null;
     institutionId?: number | null;
     institutionName?: string | null;
     token: string;
@@ -29,23 +31,24 @@ export const useSessionStore = create<SessionState>()(
       _hasHydrated: false,
       authed: false,
       email: null,
+      username: null,
       institutionId: null,
       institutionName: null,
       token: null,
       remember: false,
 
-      login: ({ email, institutionId, institutionName, token, remember = false }) => {
+      login: ({ email, username, institutionId, institutionName, token, remember = false }) => {
         if (!remember) {
           sessionStorage.setItem(SESSION_FLAG, "1");
         } else {
           sessionStorage.removeItem(SESSION_FLAG);
         }
-        set({ authed: true, email, institutionId: institutionId ?? null, institutionName: institutionName ?? null, token, remember });
+        set({ authed: true, email, username: username ?? null, institutionId: institutionId ?? null, institutionName: institutionName ?? null, token, remember });
       },
 
       logout: () => {
         sessionStorage.removeItem(SESSION_FLAG);
-        set({ authed: false, email: null, institutionId: null, institutionName: null, token: null, remember: false });
+        set({ authed: false, email: null, username: null, institutionId: null, institutionName: null, token: null, remember: false });
       },
 
       getAuthHeader: () => {
@@ -58,6 +61,7 @@ export const useSessionStore = create<SessionState>()(
       partialize: (state) => ({
         authed: state.authed,
         email: state.email,
+        username: state.username,
         institutionId: state.institutionId,
         institutionName: state.institutionName,
         token: state.token,

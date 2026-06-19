@@ -36,6 +36,7 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     email: user.email,
+    username: user.username ?? user.email,
     institutionId,
     institutionName: user.institution_name ?? null,
     token,
