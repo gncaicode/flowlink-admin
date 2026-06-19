@@ -9,7 +9,7 @@ export async function GET(req: Request) {
   if (!payload) return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
 
   const [rows] = await pool.query(
-    `SELECT u.id, u.email, u.institution_id, i.name AS institution_name, i.department, i.manager
+    `SELECT u.id, u.email, u.username, u.institution_id, i.name AS institution_name, i.department, i.manager
      FROM users u
      LEFT JOIN institutions i ON i.id = u.institution_id
      WHERE u.id = ? LIMIT 1`,
@@ -20,6 +20,7 @@ export async function GET(req: Request) {
 
   return NextResponse.json({
     email: user.email,
+    username: user.username ?? user.email,
     institutionId: user.institution_id,
     institutionName: user.institution_name,
     department: user.department,

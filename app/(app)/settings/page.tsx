@@ -9,6 +9,7 @@ import { useSessionStore } from "@/lib/store/session";
 
 type UserInfo = {
   email: string;
+  username: string;
   institutionName: string;
   department: string;
   managerName: string;
@@ -21,7 +22,7 @@ export default function SettingsPage() {
   const sessionInstitutionId = useSessionStore((s) => s.institutionId);
   const authHeader = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
 
-  const [info, setInfo] = useState<UserInfo>({ email: "", institutionName: "", department: "", managerName: "" });
+  const [info, setInfo] = useState<UserInfo>({ email: "", username: "", institutionName: "", department: "", managerName: "" });
   const [institutionName, setInstitutionName] = useState("");
   const [department, setDepartment] = useState("");
   const [bizNumber, setBizNumber] = useState("");
@@ -170,10 +171,10 @@ export default function SettingsPage() {
               leading={<IconUser size={16} />}
             />
             <Input
-              label="기관 이메일"
-              value={info.email}
+              label="기관 아이디"
+              value={info.username}
               leading={<IconUser size={16} />}
-              type="email"
+              type="text"
               disabled
             />
             <Input
