@@ -32,7 +32,7 @@ export default function EditPatientPage({
   async function save() {
     setError(null);
     if (!name || !pid) {
-      setError("이름과 환자번호를 입력해 주세요.");
+      setError("이름과 아이디를 입력해 주세요.");
       return;
     }
     try {
@@ -70,8 +70,8 @@ export default function EditPatientPage({
             leading={<IconUser size={16} />}
           />
           <Input
-            label="환자번호 (PID)"
-            placeholder="P-2026-00000"
+            label="아이디"
+            placeholder="아이디 입력"
             value={pid}
             onChange={(e) => setPid(e.target.value)}
           />
