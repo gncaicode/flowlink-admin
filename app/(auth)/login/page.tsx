@@ -68,7 +68,7 @@ export default function LoginPage() {
 
       <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4">
         <Input
-          label="아이디"
+          label="기관 아이디"
           placeholder=""
           value={username}
           onChange={(e) => setUsername(e.target.value)}
