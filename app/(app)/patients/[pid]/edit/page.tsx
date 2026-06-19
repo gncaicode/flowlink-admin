@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { IconCheck, IconUser, IconLock } from "@tabler/icons-react";
+import { IconCheck, IconUser, IconLock, IconEye, IconEyeOff } from "@tabler/icons-react";
 import { Caption } from "@/components/ui/Caption";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -24,6 +24,7 @@ export default function EditPatientPage({
   const [age, setAge] = useState<number | "">(patient?.age ?? "");
   const [gender, setGender] = useState<"M" | "F">(patient?.gender ?? "F");
 
+  const [showPassword, setShowPassword] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -82,8 +83,13 @@ export default function EditPatientPage({
           placeholder="변경할 경우에만 입력"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          type="password"
+          type={showPassword ? "text" : "password"}
           leading={<IconLock size={16} />}
+          trailing={
+            <button type="button" onClick={() => setShowPassword((v) => !v)} className="text-ink-500 hover:text-navy transition-colors">
+              {showPassword ? <IconEyeOff size={16} /> : <IconEye size={16} />}
+            </button>
+          }
           caption="비워두면 기존 비밀번호가 유지됩니다."
         />
 
