@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
-  IconMail,
+  IconUser,
   IconLock,
   IconArrowRight,
   IconBuildingHospital,
@@ -16,7 +16,7 @@ import { useSessionStore } from "@/lib/store/session";
 export default function LoginPage() {
   const router = useRouter();
   const login = useSessionStore((s) => s.login);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -25,8 +25,8 @@ export default function LoginPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    if (!email || !password) {
-      setError("이메일과 비밀번호를 모두 입력해 주세요.");
+    if (!username || !password) {
+      setError("아이디와 비밀번호를 모두 입력해 주세요.");
       return;
     }
     setLoading(true);
@@ -34,7 +34,7 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, remember }),
+        body: JSON.stringify({ username, password, remember }),
       });
       const data = await res.json() as { email: string; institutionId: number | null; institutionName?: string; token: string; error?: string };
       if (!res.ok) {
@@ -68,13 +68,13 @@ export default function LoginPage() {
 
       <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4">
         <Input
-          label="기관 이메일"
+          label="아이디"
           placeholder=""
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          leading={<IconMail size={16} />}
-          type="email"
-          autoComplete="email"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          leading={<IconUser size={16} />}
+          type="text"
+          autoComplete="username"
           error={error || undefined}
         />
         <Input
