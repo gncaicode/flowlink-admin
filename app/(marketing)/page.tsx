@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { QRCodeSVG } from "qrcode.react";
 import {
   IconScanEye,
   IconChartLine,
@@ -324,6 +325,21 @@ export default function PromotionPage() {
             >
               이미 계정이 있나요?
             </Link>
+          </div>
+
+          {/* 환자 앱 QR */}
+          <div className="mt-14 inline-flex flex-col items-center gap-4 bg-white border border-ink-200 rounded-[20px] px-8 py-6 shadow-sm">
+            <p className="text-[12px] font-semibold text-ink-500 tracking-widest uppercase">Google Play</p>
+            <QRCodeSVG
+              value="https://play.google.com/store/apps/details?id=com.gncaitech.flowlink"
+              size={120}
+              bgColor="#ffffff"
+              fgColor="#1a364d"
+              level="M"
+            />
+            <p className="text-[12px] text-ink-500 leading-relaxed text-center max-w-[200px]">
+              환자에게 QR코드를 스캔하게 하여<br />FlowLink 앱을 설치하세요.
+            </p>
           </div>
         </div>
       </section>
